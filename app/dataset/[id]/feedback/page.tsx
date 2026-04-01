@@ -1,60 +1,60 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter, useParams } from 'next/navigation'
-import Navbar from '@/components/Navbar'
-import RatingStars from '@/components/RatingStars'
-import { apiClient, getAuthToken } from '@/lib/api'
+import { useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import Navbar from "@/components/Navbar";
+import RatingStars from "@/components/RatingStars";
+import { apiClient, getAuthToken } from "@/lib/api";
 
 export default function FeedbackPage() {
-  const router = useRouter()
-  const params = useParams()
-  const datasetId = params.id as string
+  const router = useRouter();
+  const params = useParams();
+  const datasetId = params.id as string;
 
-  const [rating, setRating] = useState(0)
-  const [comment, setComment] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
+  const [rating, setRating] = useState(0);
+  const [comment, setComment] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!getAuthToken()) {
-      router.push(`/login?next=/dataset/${datasetId}/feedback`)
-      return
+      router.push(`/login?next=/dataset/${datasetId}/feedback`);
+      return;
     }
 
     if (rating === 0) {
-      setError('Please select a rating')
-      return
+      setError("Please select a rating");
+      return;
     }
 
     if (!comment.trim()) {
-      setError('Please enter a comment')
-      return
+      setError("Please enter a comment");
+      return;
     }
 
     try {
-      setLoading(true)
-      setError('')
+      setLoading(true);
+      setError("");
 
       await apiClient.postDatasetFeedback(datasetId, {
         rating,
         comment,
-      })
+      });
 
-      setSuccess(true)
+      setSuccess(true);
       setTimeout(() => {
-        router.push(`/dataset/${datasetId}`)
-      }, 2000)
+        router.push(`/dataset/${datasetId}`);
+      }, 2000);
     } catch (err) {
-      setError('Failed to submit review. Please try again.')
-      console.error('Error submitting feedback:', err)
+      setError("Failed to submit review. Please try again.");
+      console.error("Error submitting feedback:", err);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -62,7 +62,9 @@ export default function FeedbackPage() {
 
       <main className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="bg-white rounded-lg border border-gray-200 p-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Submit Your Review</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            Submit Your Review
+          </h1>
           <p className="text-gray-600 mb-8">
             Share your feedback about this dataset to help other users
           </p>
@@ -86,16 +88,23 @@ export default function FeedbackPage() {
                 Rating
               </label>
               <div className="p-4 bg-gray-50 rounded-lg inline-block">
-                <RatingStars rating={rating} onRate={setRating} interactive={true} />
+                <RatingStars
+                  rating={rating}
+                  onRate={setRating}
+                  interactive={true}
+                />
               </div>
               <p className="text-sm text-gray-600 mt-2">
-                {rating > 0 ? `You rated: ${rating}/5` : 'Click to rate'}
+                {rating > 0 ? `You rated: ${rating}/5` : "Click to rate"}
               </p>
             </div>
 
             {/* Comment */}
             <div>
-              <label htmlFor="comment" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="comment"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Comment
               </label>
               <textarea
@@ -118,7 +127,7 @@ export default function FeedbackPage() {
                 disabled={loading}
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400 font-medium"
               >
-                {loading ? 'Submitting...' : 'Submit Review'}
+                {loading ? "Submitting..." : "Submit Review"}
               </button>
               <button
                 type="button"
@@ -132,5 +141,5 @@ export default function FeedbackPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

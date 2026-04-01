@@ -1,14 +1,14 @@
-'use client'
+"use client";
 
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    router.push('/datasets')
-  }, [router])
+    router.push("/datasets");
+  }, [router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
@@ -19,5 +19,5 @@ export default function Home() {
         <p className="mt-4 text-gray-600">Redirecting...</p>
       </div>
     </div>
-  )
+  );
 }

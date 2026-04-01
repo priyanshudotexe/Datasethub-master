@@ -1,56 +1,56 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Navbar from '@/components/Navbar'
-import DatasetCard from '@/components/DatasetCard'
-import { apiClient } from '@/lib/api'
-import Link from 'next/link'
+import { useEffect, useState } from "react";
+import Navbar from "@/components/Navbar";
+import DatasetCard from "@/components/DatasetCard";
+import { apiClient } from "@/lib/api";
+import Link from "next/link";
 
 interface Dataset {
-  id: string
-  title: string
-  description: string
-  rating?: number
-  credibilityScore?: number
+  id: string;
+  title: string;
+  description: string;
+  rating?: number;
+  credibilityScore?: number;
 }
 
 export default function DatasetsPage() {
-  const [datasets, setDatasets] = useState<Dataset[]>([])
-  const [loading, setLoading] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([])
+  const [datasets, setDatasets] = useState<Dataset[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredDatasets, setFilteredDatasets] = useState<Dataset[]>([]);
 
   useEffect(() => {
-    fetchDatasets()
-  }, [])
+    fetchDatasets();
+  }, []);
 
   const fetchDatasets = async () => {
     try {
-      setLoading(true)
-      const response = await apiClient.getDatasets()
-      setDatasets(response.data || [])
-      setFilteredDatasets(response.data || [])
+      setLoading(true);
+      const response = await apiClient.getDatasets();
+      setDatasets(response.data || []);
+      setFilteredDatasets(response.data || []);
     } catch (error) {
-      console.error('Error fetching datasets:', error)
-      setDatasets([])
+      console.error("Error fetching datasets:", error);
+      setDatasets([]);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query)
+    setSearchQuery(query);
     if (!query.trim()) {
-      setFilteredDatasets(datasets)
+      setFilteredDatasets(datasets);
     } else {
       const filtered = datasets.filter(
         (dataset) =>
           dataset.title.toLowerCase().includes(query.toLowerCase()) ||
-          dataset.description.toLowerCase().includes(query.toLowerCase())
-      )
-      setFilteredDatasets(filtered)
+          dataset.description.toLowerCase().includes(query.toLowerCase()),
+      );
+      setFilteredDatasets(filtered);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -84,7 +84,9 @@ export default function DatasetsPage() {
         ) : filteredDatasets.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
-              {searchQuery ? 'No datasets found matching your search.' : 'No datasets available yet.'}
+              {searchQuery
+                ? "No datasets found matching your search."
+                : "No datasets available yet."}
             </p>
           </div>
         ) : (
@@ -103,5 +105,5 @@ export default function DatasetsPage() {
         )}
       </main>
     </div>
-  )
+  );
 }

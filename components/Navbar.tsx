@@ -1,35 +1,35 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import { useRouter, usePathname } from 'next/navigation'
-import Link from 'next/link'
-import { User } from 'lucide-react'
-import { clearAuthToken, isAuthenticated } from '@/lib/api'
+import { useEffect, useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
+import { User } from "lucide-react";
+import { clearAuthToken, isAuthenticated } from "@/lib/api";
 
 interface NavbarProps {
-  onSearch?: (query: string) => void
-  searchValue?: string
+  onSearch?: (query: string) => void;
+  searchValue?: string;
 }
 
 export default function Navbar({ onSearch, searchValue }: NavbarProps) {
-  const router = useRouter()
-  const pathname = usePathname()
-  const [loggedIn, setLoggedIn] = useState(false)
+  const router = useRouter();
+  const pathname = usePathname();
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    setLoggedIn(isAuthenticated())
-  }, [pathname])
+    setLoggedIn(isAuthenticated());
+  }, [pathname]);
 
   const handleLogout = () => {
-    clearAuthToken()
-    router.push('/login')
-  }
+    clearAuthToken();
+    router.push("/login");
+  };
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    onSearch?.(e.target.value)
-  }
+    onSearch?.(e.target.value);
+  };
 
-  const showSearch = pathname === '/datasets'
+  const showSearch = pathname === "/datasets";
 
   return (
     <nav className="bg-white border-b border-gray-200 sticky top-0 z-50">
@@ -46,7 +46,7 @@ export default function Navbar({ onSearch, searchValue }: NavbarProps) {
               <input
                 type="text"
                 placeholder="Search datasets..."
-                value={searchValue || ''}
+                value={searchValue || ""}
                 onChange={handleSearch}
                 className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
@@ -63,12 +63,18 @@ export default function Navbar({ onSearch, searchValue }: NavbarProps) {
                 >
                   Logout
                 </button>
-                <button className="text-gray-600 hover:text-gray-900" aria-label="User profile">
+                <button
+                  className="text-gray-600 hover:text-gray-900"
+                  aria-label="User profile"
+                >
                   <User size={24} />
                 </button>
               </>
             ) : (
-              <Link href="/login" className="text-gray-600 hover:text-gray-900 text-sm">
+              <Link
+                href="/login"
+                className="text-gray-600 hover:text-gray-900 text-sm"
+              >
                 Login
               </Link>
             )}
@@ -76,5 +82,5 @@ export default function Navbar({ onSearch, searchValue }: NavbarProps) {
         </div>
       </div>
     </nav>
-  )
+  );
 }
